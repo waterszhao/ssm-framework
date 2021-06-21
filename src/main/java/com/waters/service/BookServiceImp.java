@@ -3,6 +3,7 @@ package com.waters.service;
 import com.waters.dao.BookMapper;
 import com.waters.pojo.Book;
 
+//对应的实现类
 import java.util.List;
 
 public class BookServiceImp implements BookService{

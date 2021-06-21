@@ -8,56 +8,74 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/*
+* 书籍控制器，主要用于接受前端的请求
+* 完成操作后返回相应的视图
+*
+* 功能包括增删改查
+* */
 @Controller
 @RequestMapping("/book")
 public class BookController {
 
+    //使用mybatis框架获得数据库服务接口
     @Autowired
     BookService bookService;
 
+    // 显示所有书本并返回主页视图
     @RequestMapping("/allBook")
     public String allBook(Model model){
         List<Book> books = bookService.queryAll();
         model.addAttribute("books",books);
 
-        return "allBook";
+        return "/book/allBook";
     }
 
-
+    //转到添加书本视图
     @RequestMapping("/toAddBook")
     public String toAddBook(){
-        return "addBook";
+        return "book/addBook";
     }
 
+    //添加一本书
     @RequestMapping("/addBook")
     public String addBook(Book book, Model model){
         bookService.insert(book);
         return "redirect:/book/allBook";
     }
 
+    //转到更新书本页面
     @RequestMapping("/toUpdateBook")
     public String toUpdateBook(Model model, int bookID){
         Book book = bookService.query(bookID);
         model.addAttribute("book",book);
-
-        return "updateBook";
+        return "/book/updateBook";
     }
 
+    //更新一本书
     @RequestMapping("/updateBook")
     public String updateBook(Book book){
         bookService.update(book);
         return "redirect:/book/allBook";
     }
 
+    //删除一本书
     @RequestMapping("/deleteBook/{bookID}")
-    public String deleteBook(@PathVariable("bookID") int bookID){
-        bookService.delete(bookID);
-
+    public String deleteBook(@PathVariable("bookID") int bookID, HttpServletRequest httpServletRequest){
+        Cookie[] cookies = httpServletRequest.getCookies();
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals("control") && cookie.getValue().equals("2")){
+                bookService.delete(bookID);
+            }
+        }
         return "redirect:/book/allBook";
     }
 
+    //按书名模糊搜索
     @RequestMapping("/queryByName")
     public String queryByName(Model model, String name){
         List<Book> books = bookService.queryByName(name);
@@ -65,6 +83,6 @@ public class BookController {
         if (books.size() == 0) {
            model.addAttribute("error","未查到相关结果！");
         }
-        return "allBook";
+        return "/book/allBook";
     }
 }

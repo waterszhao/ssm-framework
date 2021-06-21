@@ -4,6 +4,7 @@ import com.waters.pojo.Book;
 
 import java.util.List;
 
+//books表映射类
 public interface BookMapper {
     public int insert(Book book);
 

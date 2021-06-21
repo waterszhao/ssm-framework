@@ -4,6 +4,7 @@ import com.waters.pojo.Book;
 
 import java.util.List;
 
+//Book服务抽象类
 public interface BookService {
 
     public int insert(Book book);
