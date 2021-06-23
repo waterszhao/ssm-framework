@@ -6,4 +6,8 @@
     <import resource="spring-mvc.xml"/>
     <import resource="spring-dao.xml"/>
     <import resource="spring-service.xml"/>
+
+    <bean id="domain" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="${jdbc.domain}"/>
+    </bean>
 </beans>

@@ -22,8 +22,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     //cookie作用域
-    String domain= "localhost";
+    @Autowired
+    String domain;
 
     //注册
     @RequestMapping("/toRegister")
