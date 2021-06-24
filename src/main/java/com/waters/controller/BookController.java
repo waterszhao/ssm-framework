@@ -1,15 +1,19 @@
 package com.waters.controller;
 
 import com.waters.pojo.Book;
+import com.waters.pojo.User;
 import com.waters.service.BookService;
+import com.waters.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /*
@@ -20,18 +24,30 @@ import java.util.List;
 * */
 @Controller
 @RequestMapping("/book")
+// 原型模式（prototype），每次请求开启新的线程处理，防止阻塞
+@RequestScope
 public class BookController {
 
     //使用mybatis框架获得数据库服务接口
     @Autowired
     BookService bookService;
+    @Autowired
+    UserService userService;
+
 
     // 显示所有书本并返回主页视图
     @RequestMapping("/allBook")
-    public String allBook(Model model){
+    public String allBook(Model model, HttpServletRequest httpServletRequest, HttpSession session){
+
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("userName")){
+                User user = userService.queryByName(cookie.getValue());
+                session.setAttribute("control",user.getControlLevel());
+            }
+        }
+
         List<Book> books = bookService.queryAll();
         model.addAttribute("books",books);
-
         return "/book/allBook";
     }
 

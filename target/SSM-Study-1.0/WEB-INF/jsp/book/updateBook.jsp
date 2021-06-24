@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<c:if test="${cookie.control.value != 2}">
+<c:if test="${sessionScope.control != 2}">
     <%
         response.sendRedirect("allBook");
     %>

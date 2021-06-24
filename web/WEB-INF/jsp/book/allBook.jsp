@@ -19,7 +19,7 @@
                 <c:choose>
                     <c:when test="${cookie.userName != null}">
                         <span>欢迎您，<a href="${pageContext.request.contextPath}/user/toUpdateUser?userID=${cookie.userID.value}">${cookie.userName.value}</a></span>
-                        <span><a href="${pageContext.request.contextPath}/user/logout?userID=${cookie.userID.value}&&controlLevel=${cookie.control.value}" class="btn btn-primary">退出登录</a></span>
+                        <span><a href="${pageContext.request.contextPath}/user/logout?userID=${cookie.userID.value}&&controlLevel=${sessionScope.control}" class="btn btn-primary">退出登录</a></span>
                     </c:when>
                     <c:otherwise>
                         <span>欢迎您，游客！您可以&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/toLogin" class="btn-primary btn">登录</a>
@@ -34,7 +34,7 @@
                 <div class="col-md-4 column ">
                     <a href="${pageContext.request.contextPath}/book/allBook" class="btn btn-primary ">查看所有书籍信息</a>
                 </div>
-                <c:if test="${cookie.control.value.equals('2')}">
+                <c:if test="${sessionScope.control==2}">
                     <div class="col-md-4 column ">
                         <a href="${pageContext.request.contextPath}/book/toAddBook" class="btn btn-primary ">新增书籍信息</a>
                     </div>
@@ -56,25 +56,25 @@
                         <th>书籍名称</th>
                         <th>书籍数量</th>
                         <th>书籍详情</th>
-                        <c:if test="${cookie.control != null}">
+                        <c:if test="${sessionScope.control > 0}">
                             <th>操作</th>
                         </c:if>
                     </tr>
                     <tbody>
-                    <c:forEach var="book" items="${books}">
+                    <c:forEach var="book" items="${books}"">
                     <tr>
                         <th>${book.bookID}</th>
                         <th>${book.bookName}</th>
                         <th>${book.bookCount}</th>
                         <th>${book.detail}</th>
                         <c:choose>
-                            <c:when test="${cookie.control.value.equals('2')}">
+                            <c:when test="${sessionScope.control==2}">
                                 <th>
                                     <a class="btn btn-primary" href="${pageContext.request.contextPath}/book/toUpdateBook?bookID=${book.bookID}">修改</a> &nbsp; | &nbsp;
                                     <a class="btn-primary btn" href="${pageContext.request.contextPath}/book/deleteBook/${book.bookID}">删除</a>
                                 </th>
                             </c:when>
-                            <c:when test="${cookie.control.value.equals('1')}">
+                            <c:when test="${sessionScope.control==1}">
                                 <th>
                                     <a class="btn btn-primary" href="">借阅</a> &nbsp;
                                 </th>

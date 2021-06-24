@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /*
  * 用户控制器，主要用于接受前端的请求
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public String register(User user, Model model,HttpServletResponse httpServletResponse){
+    public String register(User user, Model model,HttpServletResponse httpServletResponse, HttpSession httpSession){
 
         User user1 = userService.queryByName(user.getUserName());
 
@@ -47,6 +48,7 @@ public class UserController {
         userService.insert(user);
         User user2 = userService.queryByName(user.getUserName());
         setCookies(httpServletResponse, user2,60*60*24);
+        httpSession.setAttribute("control",user.getControlLevel());
         return "redirect: /book/allBook";
     }
 
@@ -58,10 +60,11 @@ public class UserController {
 
     // 登录并设置cookie
     @RequestMapping("/login")
-    public String login(String userName,String password, Model model, HttpServletResponse httpServletResponse){
+    public String login(String userName,String password, Model model, HttpServletResponse httpServletResponse,HttpSession httpSession){
         User user = userService.queryByName(userName);
         if (user != null && user.getPassword().equals(password)){
             setCookies(httpServletResponse, user,60*60*24);
+            httpSession.setAttribute("control",user.getControlLevel());
             return "redirect: /book/allBook";
         }
         model.addAttribute("error","用户名或密码错误");
@@ -70,9 +73,10 @@ public class UserController {
 
     //登出并回收cookie
     @RequestMapping("/logout")
-    public String logout(HttpServletResponse httpServletResponse,User user){
+    public String logout(HttpServletResponse httpServletResponse,User user,HttpSession httpSession){
 
         setCookies(httpServletResponse, user,0);
+        httpSession.removeAttribute("control");
         return "redirect: /book/allBook";
     }
 
@@ -84,7 +88,7 @@ public class UserController {
 
     //使用邮箱和手机号修改密码
     @RequestMapping("updatePassword")
-    public String updatePassword(User user,Model model,HttpServletResponse httpServletResponse){
+    public String updatePassword(User user,Model model,HttpServletResponse httpServletResponse,HttpSession httpSession){
         User user1 = userService.queryByName(user.getUserName());
         if (user1 == null){
            model.addAttribute("error","用户名不存在");
@@ -101,7 +105,7 @@ public class UserController {
         userService.update(user1);
 
         setCookies(httpServletResponse,user1,60*60*24);
-
+        httpSession.setAttribute("control",user.getControlLevel());
         return "redirect: /book/allBook";
     }
 
@@ -116,7 +120,7 @@ public class UserController {
 
     //修改
     @RequestMapping("/updateUser")
-    public String updateUser(User user, Model model,HttpServletResponse httpServletResponse){
+    public String updateUser(User user, Model model,HttpServletResponse httpServletResponse,HttpSession httpSession){
         User user1 = userService.queryByName(user.getUserName());
 
         if (user1 != null && !user.getUserName().equals(user1.getUserName())) {
@@ -131,6 +135,7 @@ public class UserController {
 
         userService.update(user2);
         setCookies(httpServletResponse,user2,60*60*24);
+        httpSession.setAttribute("control",user.getControlLevel());
         return "redirect: /book/allBook";
     }
 
@@ -141,11 +146,7 @@ public class UserController {
         usr.setDomain(domain);
         usr.setMaxAge(maxAge);//1 day
         httpServletResponse.addCookie(usr);
-        Cookie control = new Cookie("control",user.getControlLevel()+"");
-        control.setMaxAge(maxAge);
-        control.setPath("/");
-        control.setDomain(domain);
-        httpServletResponse.addCookie(control);
+
         Cookie userName = new Cookie("userName",user.getUserName());
         userName.setMaxAge(maxAge);
         userName.setPath("/");
