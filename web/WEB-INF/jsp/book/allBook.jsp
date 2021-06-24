@@ -61,7 +61,7 @@
                         </c:if>
                     </tr>
                     <tbody>
-                    <c:forEach var="book" items="${books}"">
+                    <c:forEach var="book" items="${books}">
                     <tr>
                         <th>${book.bookID}</th>
                         <th>${book.bookName}</th>
