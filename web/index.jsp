@@ -13,22 +13,53 @@
       line-height: 30px;
       font-size: 30px;
       text-decoration: none;
-      color: black;
+      color: #927e7e;
     }
     a:hover {
-      color: #8eff8a;
+      color: #edabf3;
+    }
+    ul{
+      list-style-type: none;
+      line-height: 50px;
     }
 
   </style>
 
 </head>
 <body>
-<div style="text-align: center;">
-  <h1>Hello Waters!</h1>
-  <h2>Hello Strangers!</h2>
-  <a href="${pageContext.request.contextPath}/book/allBook">
-    我的管理系统(beta)
-  </a>
+<div style="width: 100%;height: 30%">
+  <div style="width: 65%;float:left;">
+    &nbsp;
+    <div style="padding-left: 20%;padding-top: 10%">
+      <h3>个人（课程）项目：后续补充...</h3>
+      <ul>
+        <li><a href="https://github.com/waterszhao?tab=repositories">github</a> </li>
+        <li><a href="https://gitee.com/waterszhao">gitee</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div style="width: 35%;float:left;">
+    <div style="text-align: center;">
+      <h1>Hello Waters!</h1>
+      <h2>Hello Strangers!</h2>
+    </div>
+    <div>
+      <h3>个人主页：</h3>
+      <ul>
+        <li><a href="https://github.com/waterszhao?tab=repositories">github</a> </li>
+        <li><a href="https://gitee.com/waterszhao">gitee</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>我的管理系统:<br/>(github.com/waterszhao/ssm-framework)</h3>
+      <ul>
+        <li><a href="${pageContext.request.contextPath}/book/allBook" style="font-weight: bold">在线预览</a></li>
+      </ul>
+    </div>
+  </div>
 </div>
+
 </body>
 </html>

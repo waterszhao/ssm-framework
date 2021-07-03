@@ -2,6 +2,7 @@ package com.waters.controller;
 
 import com.waters.pojo.User;
 import com.waters.service.UserService;
+import com.waters.utils.EncodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ public class UserController {
             return "/user/register";
         }
         user.setControlLevel(1);
+        user.setPassword(EncodeUtils.encoderByMd5(user.getPassword()));
         userService.insert(user);
         User user2 = userService.queryByName(user.getUserName());
         setCookies(httpServletResponse, user2,60*60*24);
@@ -62,7 +64,7 @@ public class UserController {
     @RequestMapping("/login")
     public String login(String userName,String password, Model model, HttpServletResponse httpServletResponse,HttpSession httpSession){
         User user = userService.queryByName(userName);
-        if (user != null && user.getPassword().equals(password)){
+        if (user != null && user.getPassword().equals(EncodeUtils.encoderByMd5(password))){
             setCookies(httpServletResponse, user,60*60*24);
             httpSession.setAttribute("control",user.getControlLevel());
             return "redirect: /book/allBook";
@@ -100,7 +102,7 @@ public class UserController {
                 return "/user/forgetPassword";
         }
 
-        user1.setPassword(user.getPassword());
+        user1.setPassword(EncodeUtils.encoderByMd5(user.getPassword()));
         user1.setUserName(user.getUserName());
         userService.update(user1);
 
@@ -131,7 +133,7 @@ public class UserController {
 
         User user2 = userService.query(user.getUserID());
         user2.setUserName(user.getUserName());
-        user2.setPassword(user.getPassword());
+        user2.setPassword(EncodeUtils.encoderByMd5(user.getPassword()));
 
         userService.update(user2);
         setCookies(httpServletResponse,user2,60*60*24);
