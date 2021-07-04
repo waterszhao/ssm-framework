@@ -2,7 +2,6 @@ package com.waters.utils;
 
 import sun.misc.BASE64Encoder;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

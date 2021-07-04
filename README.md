@@ -19,7 +19,7 @@ Spring-5 + SpringMVC-5 + Mybatis-3 + c3p0 + bookstrap(前端)
 
 git clone https://github.com/waterszhao/ssm-framework.git
 
-git clone https://gitee.com/tax_payable/ssm-framework.git
+git clone https://gitee.com/waterszhao/ssm-framework.git
 
 配置Tomcat服务器即可使用
 
@@ -40,3 +40,5 @@ git clone https://gitee.com/tax_payable/ssm-framework.git
 ~~添加了主页以及一些注释~~
 
 添加MySQL语句
+
+添加加密算法
